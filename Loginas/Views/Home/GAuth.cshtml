@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "Google Authentication";
+}
+
+
+<div class="jumbotron">
+    <h1>Google Authentication</h1>
+    <iframe width="500" height="500" src="@Session["GAuthUrl"].ToString()"></iframe>
+</div>
