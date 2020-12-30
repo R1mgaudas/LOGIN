@@ -1,0 +1,1360 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>ZAP Scanning Report</title>
+<style>
+body{
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  color: #000;
+  font-size: 13px;
+}
+h1{
+  text-align: center;
+  font-weight: bold;
+  font-size: 32px
+}
+h3{
+  font-size: 16px;
+}
+table{
+  border: none;
+  font-size: 13px;
+}
+td, th {
+  padding: 3px 4px;
+  word-break: break-word;
+}
+th{
+  font-weight: bold;
+}
+.results th{
+  text-align: left;
+}
+.spacer{
+  margin: 10px;
+}
+.spacer-lg{
+  margin: 40px;
+}
+.indent1{
+  padding: 4px 20px;
+}
+.indent2{
+  padding: 4px 40px;
+}
+.risk-high{
+  background-color: red;
+  color: #FFF;
+}
+.risk-medium{
+  background-color: orange;
+  color: #FFF;
+}
+.risk-low{
+  background-color: yellow;
+  color: #000;
+}
+.risk-info{
+  background-color: blue;
+  color: #FFF;
+}
+.summary th{
+  color: #FFF;
+}
+.alerts th{
+  color: #FFF;
+}
+.left-header{
+  display: inline-block;
+}
+.time-stamp{
+  float: right;
+}
+</style>
+</head>
+<body>
+<h1>
+<img src="data:image/png;base64,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">
+ZAP Scanning Report
+</h1>
+<p>
+
+</p>
+<h3 class="left-header">Summary of Alerts</h3>
+<h3 class="time-stamp">Generated on Wed, 30 Dec 2020 07:23:55</h3>
+<table width="45%" class="summary">
+<tr bgcolor="#666666">
+<th width="45%" height="24">Risk 
+      Level</th><th width="55%" align="center">Number 
+      of Alerts</th>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td><a href="#high">High</a></td><td align="center">0</td>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td><a href="#medium">Medium</a></td><td align="center">1</td>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td><a href="#low">Low</a></td><td align="center">6</td>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td><a href="#info">Informational</a></td><td align="center">3</td>
+</tr>
+</table>
+<div class="spacer-lg"></div>
+<h3>Alerts</h3>
+<table width="75%" class="alerts">
+<tr bgcolor="#666666">
+<th width="60%" height="24">Name</th><th width="20%" align="center">Risk Level</th><th width="20%" align="center">Number of Instances</th>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td>Vulnerable JS Library</td><td align="center">Medium</td><td align="center">1</td>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td>Cookie Without SameSite Attribute</td><td align="center">Low</td><td align="center">1</td>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td>Cookie Without Secure Flag</td><td align="center">Low</td><td align="center">1</td>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td>Incomplete or No Cache-control and Pragma HTTP Header Set</td><td align="center">Low</td><td align="center">6</td>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td>Server Leaks Information via "X-Powered-By" HTTP Response Header Field(s)</td><td align="center">Low</td><td align="center">10</td>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td>X-AspNet-Version Response Header</td><td align="center">Low</td><td align="center">10</td>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td>X-Content-Type-Options Header Missing</td><td align="center">Low</td><td align="center">9</td>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td>Information Disclosure - Suspicious Comments</td><td align="center">Informational</td><td align="center">3</td>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td>Loosely Scoped Cookie</td><td align="center">Informational</td><td align="center">1</td>
+</tr>
+<tr bgcolor="#e8e8e8">
+<td>Timestamp Disclosure - Unix</td><td align="center">Informational</td><td align="center">8</td>
+</tr>
+</table>
+<div class="spacer-lg"></div>
+<h3>Alert Detail</h3>
+<div class="spacer"></div>
+<table width="100%" class="results">
+  
+  
+  
+  
+<tr height="24" class="risk-medium">
+<th width="20%"><a name="medium"></a>Medium (Medium)</th><th width="80%">Vulnerable JS Library</th>
+</tr>
+  
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Description</td><td width="80%"><p>The identified library jquery, version 3.4.1 is vulnerable.</p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Scripts/jquery-3.4.1.js</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">jquery-3.4.1.js</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Instances</td><td width="80%">1</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Solution</td><td width="80%"><p>Please upgrade to the latest version of jquery.</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Other information</td><td width="80%"><p>CVE-2020-11023</p><p>CVE-2020-11022</p><p></p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Reference</td><td width="80%"><p>https://blog.jquery.com/2020/04/10/jquery-3-5-0-released/</p><p></p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">CWE Id</td><td width="80%">829</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Source ID</td><td width="80%">3</td>
+</tr>
+
+</table>
+<div class="spacer"></div>
+<table width="100%" class="results">
+  
+  
+  
+  
+<tr height="24" class="risk-low">
+<a name="low"></a><th width="20%">Low (Medium)</th><th width="80%">Cookie Without SameSite Attribute</th>
+</tr>
+  
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Description</td><td width="80%"><p>A cookie has been set without the SameSite attribute, which means that the cookie can be sent as a result of a 'cross-site' request. The SameSite attribute is an effective counter measure to cross-site request forgery, cross-site script inclusion, and timing attacks.</p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Login</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">__RequestVerificationToken</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">Set-Cookie: __RequestVerificationToken</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Instances</td><td width="80%">1</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Solution</td><td width="80%"><p>Ensure that the SameSite attribute is set to either 'lax' or ideally 'strict' for all cookies.</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Reference</td><td width="80%"><p>https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">CWE Id</td><td width="80%">16</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">WASC Id</td><td width="80%">13</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Source ID</td><td width="80%">3</td>
+</tr>
+
+</table>
+<div class="spacer"></div>
+<table width="100%" class="results">
+  
+  
+  
+  
+<tr height="24" class="risk-low">
+<a name="low"></a><th width="20%">Low (Medium)</th><th width="80%">Cookie Without Secure Flag</th>
+</tr>
+  
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Description</td><td width="80%"><p>A cookie has been set without the secure flag, which means that the cookie can be accessed via unencrypted connections.</p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Login</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">__RequestVerificationToken</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">Set-Cookie: __RequestVerificationToken</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Instances</td><td width="80%">1</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Solution</td><td width="80%"><p>Whenever a cookie contains sensitive information or is a session token, then it should always be passed using an encrypted channel. Ensure that the secure flag is set for cookies containing such sensitive information.</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Reference</td><td width="80%"><p>https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes.html</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">CWE Id</td><td width="80%">614</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">WASC Id</td><td width="80%">13</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Source ID</td><td width="80%">3</td>
+</tr>
+
+</table>
+<div class="spacer"></div>
+<table width="100%" class="results">
+  
+  
+  
+  
+<tr height="24" class="risk-low">
+<a name="low"></a><th width="20%">Low (Medium)</th><th width="80%">Incomplete or No Cache-control and Pragma HTTP Header Set</th>
+</tr>
+  
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Description</td><td width="80%"><p>The cache-control and pragma HTTP header have not been set properly or are missing allowing the browser and proxies to cache content.</p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Register</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">POST</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">Cache-Control</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">private</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Content/site.css</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">Cache-Control</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Login</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">Cache-Control</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">private</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Login</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">POST</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">Cache-Control</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">private</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Content/bootstrap.css</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">Cache-Control</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Register</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">Cache-Control</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">private</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Instances</td><td width="80%">6</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Solution</td><td width="80%"><p>Whenever possible ensure the cache-control HTTP header is set with no-cache, no-store, must-revalidate; and that the pragma HTTP header is set with no-cache.</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Reference</td><td width="80%"><p>https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#web-content-caching</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">CWE Id</td><td width="80%">525</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">WASC Id</td><td width="80%">13</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Source ID</td><td width="80%">3</td>
+</tr>
+
+</table>
+<div class="spacer"></div>
+<table width="100%" class="results">
+  
+  
+  
+  
+<tr height="24" class="risk-low">
+<a name="low"></a><th width="20%">Low (Medium)</th><th width="80%">Server Leaks Information via "X-Powered-By" HTTP Response Header Field(s)</th>
+</tr>
+  
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Description</td><td width="80%"><p>The web/application server is leaking information via one or more "X-Powered-By" HTTP response headers. Access to such information may facilitate attackers identifying other frameworks/components your web application is reliant upon and the vulnerabilities such components may be subject to.</p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Scripts/jquery-3.4.1.js</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">X-Powered-By: ASP.NET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Content/bootstrap.css</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">X-Powered-By: ASP.NET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Content/site.css</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">X-Powered-By: ASP.NET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">X-Powered-By: ASP.NET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Register</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">X-Powered-By: ASP.NET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Scripts/bootstrap.js</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">X-Powered-By: ASP.NET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Register</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">POST</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">X-Powered-By: ASP.NET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Scripts/modernizr-2.8.3.js</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">X-Powered-By: ASP.NET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Login</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">X-Powered-By: ASP.NET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Login</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">POST</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">X-Powered-By: ASP.NET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Instances</td><td width="80%">10</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Solution</td><td width="80%"><p>Ensure that your web server, application server, load balancer, etc. is configured to suppress "X-Powered-By" headers.</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Reference</td><td width="80%"><p>http://blogs.msdn.com/b/varunm/archive/2013/04/23/remove-unwanted-http-response-headers.aspx</p><p>http://www.troyhunt.com/2012/02/shhh-dont-let-your-response-headers.html</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">CWE Id</td><td width="80%">200</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">WASC Id</td><td width="80%">13</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Source ID</td><td width="80%">3</td>
+</tr>
+
+</table>
+<div class="spacer"></div>
+<table width="100%" class="results">
+  
+  
+  
+  
+<tr height="24" class="risk-low">
+<a name="low"></a><th width="20%">Low (High)</th><th width="80%">X-AspNet-Version Response Header</th>
+</tr>
+  
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Description</td><td width="80%"><p>Server leaks information via "X-AspNet-Version"/"X-AspNetMvc-Version" HTTP response header field(s).</p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">5.2</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Register</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">4.0.30319</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Register</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">5.2</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Login</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">4.0.30319</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Login</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">POST</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">4.0.30319</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Login</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">POST</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">5.2</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">4.0.30319</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Login</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">5.2</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Register</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">POST</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">4.0.30319</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Register</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">POST</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">5.2</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Instances</td><td width="80%">10</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Solution</td><td width="80%"><p>Configure the server so it will not return those headers.</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Other information</td><td width="80%"><p>An attacker can use this information to exploit known vulnerabilities.</p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Reference</td><td width="80%"><p>https://www.troyhunt.com/shhh-dont-let-your-response-headers/</p><p>https://blogs.msdn.microsoft.com/varunm/2013/04/23/remove-unwanted-http-response-headers/</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">CWE Id</td><td width="80%">933</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">WASC Id</td><td width="80%">14</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Source ID</td><td width="80%">3</td>
+</tr>
+
+</table>
+<div class="spacer"></div>
+<table width="100%" class="results">
+  
+  
+  
+  
+<tr height="24" class="risk-low">
+<a name="low"></a><th width="20%">Low (Medium)</th><th width="80%">X-Content-Type-Options Header Missing</th>
+</tr>
+  
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Description</td><td width="80%"><p>The Anti-MIME-Sniffing header X-Content-Type-Options was not set to 'nosniff'. This allows older versions of Internet Explorer and Chrome to perform MIME-sniffing on the response body, potentially causing the response body to be interpreted and displayed as a content type other than the declared content type. Current (early 2014) and legacy versions of Firefox will use the declared content type (if one is set), rather than performing MIME-sniffing.</p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Scripts/bootstrap.js</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">X-Content-Type-Options</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Register</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">X-Content-Type-Options</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Register</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">POST</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">X-Content-Type-Options</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Login</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">POST</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">X-Content-Type-Options</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Content/site.css</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">X-Content-Type-Options</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Scripts/jquery-3.4.1.js</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">X-Content-Type-Options</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Scripts/modernizr-2.8.3.js</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">X-Content-Type-Options</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Content/bootstrap.css</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">X-Content-Type-Options</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Login</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Parameter</td><td width="80%">X-Content-Type-Options</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Instances</td><td width="80%">9</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Solution</td><td width="80%"><p>Ensure that the application/web server sets the Content-Type header appropriately, and that it sets the X-Content-Type-Options header to 'nosniff' for all web pages.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that does not perform MIME-sniffing at all, or that can be directed by the web application/web server to not perform MIME-sniffing.</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Other information</td><td width="80%"><p>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.</p><p>At "High" threshold this scan rule will not alert on client or server error responses.</p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Reference</td><td width="80%"><p>http://msdn.microsoft.com/en-us/library/ie/gg622941%28v=vs.85%29.aspx</p><p>https://owasp.org/www-community/Security_Headers</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">CWE Id</td><td width="80%">16</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">WASC Id</td><td width="80%">15</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Source ID</td><td width="80%">3</td>
+</tr>
+
+</table>
+<div class="spacer"></div>
+<table width="100%" class="results">
+  
+  
+  
+  
+<tr height="24" class="risk-info">
+<th width="20%"><a name="info"></a>Informational (Low)</th><th width="80%">Information Disclosure - Suspicious Comments</th>
+</tr>
+  
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Description</td><td width="80%"><p>The response appears to contain suspicious comments which may help an attacker. Note: Matches made within script blocks or files are against the entire content not only comments.</p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Scripts/jquery-3.4.1.js</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Scripts/bootstrap.js</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Scripts/modernizr-2.8.3.js</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Instances</td><td width="80%">3</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Solution</td><td width="80%"><p>Remove all comments that return information that may help an attacker and fix any underlying problems they refer to.</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Other information</td><td width="80%"><p>The following comment/snippet was identified via the pattern: \bWHERE\b</p><p>		// For CommonJS and CommonJS-like environments where a proper `window`</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>		// Return just the one element from the set</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>	select,</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>		// We use this for POS matching in `select`</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>	rinputs = /^(?:input|select|textarea|button)$/i,</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>	// Return early from calls with invalid selector or context</p><p>The following comment/snippet was identified via the pattern: \bWHERE\b</p><p>			// (excepting DocumentFragment context, where the methods don't exist)</p><p>The following comment/snippet was identified via the pattern: \bTODO\b</p><p>							// TODO: identify versions</p><p>The following comment/snippet was identified via the pattern: \bTODO\b</p><p>						// TODO: identify versions</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>	return select( selector.replace( rtrim, "$1" ), context, results, seed );</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>		// Remove from its parent by default</p><p>The following comment/snippet was identified via the pattern: \bWHERE\b</p><p>					// Where there is no isDisabled, check manually</p><p>The following comment/snippet was identified via the pattern: \bBUGS\b</p><p>	// https://bugs.jquery.com/ticket/4833</p><p>The following comment/snippet was identified via the pattern: \bBUG\b</p><p>	// We allow this because of a bug in IE8/9 that throws an error</p><p>The following comment/snippet was identified via the pattern: \bBUGS\b</p><p>	// See https://bugs.jquery.com/ticket/13378</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>		// Regex strategy adopted from Diego Perini</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>			// Select is set to empty string on purpose</p><p>The following comment/snippet was identified via the pattern: \bBUGS\b</p><p>			// https://bugs.jquery.com/ticket/12359</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>				"&lt;select id='" + expando + "-\r\\' msallowcapture=''&gt;" +</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>				"&lt;option selected=''&gt;&lt;/option&gt;&lt;/select&gt;";</p><p>The following comment/snippet was identified via the pattern: \bLATER\b</p><p>			// IE8 throws error here and will not see later tests</p><p>The following comment/snippet was identified via the pattern: \bBUGS\b</p><p>			// https://bugs.webkit.org/show_bug.cgi?id=136851</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>				"&lt;select disabled='disabled'&gt;&lt;option/&gt;&lt;/select&gt;";</p><p>The following comment/snippet was identified via the pattern: \bLATER\b</p><p>			// IE8 throws error here and will not see later tests</p><p>The following comment/snippet was identified via the pattern: \bUSER\b</p><p>	// Can be adjusted by the user</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			/* matches from matchExpr["CHILD"]</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// Strip excess characters from unquoted arguments</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>				// Get excess from tokenize (recursively)</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>							// Seek `elem` from a previously-cached index</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>								// Fallback to seeking `elem` from the start</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>								// Use the same loop as above to seek `elem` from the start</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// Remember that setFilters inherits from pseudos</p><p>The following comment/snippet was identified via the pattern: \bUSER\b</p><p>			// The user may use createPseudo to indicate that</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// We can't set arbitrary data on XML nodes, so they don't benefit from combinator caching</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// Get initial elements from seed or context</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>				// Move matched elements from seed to results to keep them synchronized</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>		// The foundational matcher ensures that elements are reachable from top-level context(s)</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// case, which will result in a "00" `matchedCount` that differs from `i` but is also</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>select = Sizzle.select = function( selector, context, results, seed ) {</p><p>The following comment/snippet was identified via the pattern: \bLATER\b</p><p>// Give the init function the jQuery prototype for later instantiation</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>	// Methods guaranteed to produce a unique set when starting from a unique set</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>	// Convert options from String-formatted to Object-formatted if needed</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>					// If we have memory from a past run, we should fire after adding</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// Remove a callback from the list</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// Remove all callbacks from the list</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>							// Re-resolve promises immediately to dodge false rejection from</p><p>The following comment/snippet was identified via the pattern: \bWHERE\b</p><p>// Catch cases where $(document).ready() is called</p><p>The following comment/snippet was identified via the pattern: \bWHERE\b</p><p>		// In cases where either:</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// from DOM nodes, so set to undefined instead</p><p>The following comment/snippet was identified via the pattern: \bBUG\b</p><p>			// https://bugs.chromium.org/p/chromium/issues/detail?id=378607 (bug restricted)</p><p>The following comment/snippet was identified via the pattern: \bUSER\b</p><p>//	3. Use the same single mechanism to support "private" and "user" data.</p><p>The following comment/snippet was identified via the pattern: \bTODO\b</p><p>//	4. _Never_ expose "private" data to user code (TODO: Drop _data, _removeData)</p><p>The following comment/snippet was identified via the pattern: \bUSER\b</p><p>//	5. Avoid exposing implementation details on user objects (eg. expando properties)</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>	// data from the HTML5 data-* attribute</p><p>The following comment/snippet was identified via the pattern: \bLATER\b</p><p>			// Make sure we set the data so it isn't changed later</p><p>The following comment/snippet was identified via the pattern: \bTODO\b</p><p>	// TODO: Now that all calls to _data and _removeData have been replaced</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>				// Attempt to get data from the cache</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// Add a progress sentinel to prevent the fx queue from being</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>		// isHiddenWithinTree might be called from jQuery#filter function;</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>		// Halve the iteration target value to prevent interference from CSS upper bounds (gh-2144)</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>		// Iteratively approximate from a nonzero starting point</p><p>The following comment/snippet was identified via the pattern: \bLATER\b</p><p>		// Make sure we update the tween properties later on</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>	option: [ 1, "&lt;select multiple='multiple'&gt;", "&lt;/select&gt;" ],</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>	// Remove wrapper from fragment</p><p>The following comment/snippet was identified via the pattern: \bBUGS\b</p><p>// https://bugs.jquery.com/ticket/13393</p><p>The following comment/snippet was identified via the pattern: \bLATER\b</p><p>		// Make sure that the handler has a unique ID, used to find/remove it later</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>	// Detach an event or set of events from an element</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>		// Make a writable jQuery.Event from the native event object</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// Prevent triggered image.load events from bubbling to window.load</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>				// from an async native handler (gh-4350)</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>				// (focus or blur), assume that the surrogate already propagated from triggering the</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>				// native event and prevent that from happening again here.</p><p>The following comment/snippet was identified via the pattern: \bBUGS\b</p><p>// https://bugs.chromium.org/p/chromium/issues/detail?id=470258</p><p>The following comment/snippet was identified via the pattern: \bBUG\b</p><p>// for the description of the bug (it existed in older Chrome versions as well).</p><p>The following comment/snippet was identified via the pattern: \bUSER\b</p><p>	// 2. Copy user data</p><p>The following comment/snippet was identified via the pattern: \bBUGS\b</p><p>// Fix IE bugs, see support tests</p><p>The following comment/snippet was identified via the pattern: \bLATER\b</p><p>					// Keep references to cloned scripts for later restoration</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>		// Copy the events from the original to the clone</p><p>The following comment/snippet was identified via the pattern: \bWHERE\b</p><p>		// Where available, offsetWidth/offsetHeight approximate border box dimensions.</p><p>The following comment/snippet was identified via the pattern: \bWHERE\b</p><p>		// Where not available (e.g., SVG), assume unreliable box-sizing and interpret the</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>					// We should always get a number back from opacity</p><p>The following comment/snippet was identified via the pattern: \bQUERY\b</p><p>		// want to query the value if it is a CSS custom property</p><p>The following comment/snippet was identified via the pattern: \bUSER\b</p><p>		// since they are user-defined.</p><p>The following comment/snippet was identified via the pattern: \bBUG\b</p><p>				// Fixes bug #9237</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// If a hook was provided get the non-computed value from there</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// Otherwise just get the value from the style object</p><p>The following comment/snippet was identified via the pattern: \bUSER\b</p><p>		// since they are user-defined.</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>		// If a hook was provided get the computed value from there</p><p>The following comment/snippet was identified via the pattern: \bWHERE\b</p><p>			// Use .style if available and use plain properties where available.</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>				// there is still data from a stopped show/hide</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>		// from identically-valued overflowX and overflowY and Edge just mirrors</p><p>The following comment/snippet was identified via the pattern: \bBUG\b</p><p>				// Archaic crash bug won't allow us to use `1 - ( 0.5 || 0 )` (#12497)</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>	// Attach callbacks from options</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>		select = document.createElement( "select" ),</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>		opt = select.appendChild( document.createElement( "option" ) );</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>	// Must access selectedIndex to make default options select</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// Avoid an infinite loop by temporarily removing this function from the getter</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>var rfocusable = /^(?:input|select|textarea|button)$/i,</p><p>The following comment/snippet was identified via the pattern: \bWHERE\b</p><p>				// Handle cases where value is null/undef or number</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>		select: {</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>					one = elem.type === "select-one",</p><p>The following comment/snippet was identified via the pattern: \bWHERE\b</p><p>				// Don't do default actions on window, that's where global variables be (#6170)</p><p>The following comment/snippet was identified via the pattern: \bBUGS\b</p><p>// Related ticket - https://bugs.chromium.org/p/chromium/issues/detail?id=449857</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>	rsubmittable = /^(?:input|select|textarea|keygen)/i;</p><p>The following comment/snippet was identified via the pattern: \bQUERY\b</p><p>// key/values into a query string</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>			// Convert response if prev dataType is non-auto and differs from current</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>								error: conv ? e : "No conversion from " + prev + " to " + current</p><p>The following comment/snippet was identified via the pattern: \bUSERNAME\b</p><p>		username: null,</p><p>The following comment/snippet was identified via the pattern: \bLATER\b</p><p>		// and/or If-None-Match header later on</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>				// Extract error from statusText and normalize for non-aborts</p><p>The following comment/snippet was identified via the pattern: \bUSER\b</p><p>		// Make this explicit, since user can override this through ajaxSetup (#11264)</p><p>The following comment/snippet was identified via the pattern: \bUSERNAME\b</p><p>					options.username,</p><p>The following comment/snippet was identified via the pattern: \bBUGS\b</p><p>// https://bugs.webkit.org/show_bug.cgi?id=137337</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>		// Stop scripts or inline event handlers from being executed immediately</p><p>The following comment/snippet was identified via the pattern: \bUSER\b</p><p>			// user can override it through ajaxSetup method</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>		// position:fixed elements are offset from the viewport, which itself always has zero offset</p><p>The following comment/snippet was identified via the pattern: \bBUG\b</p><p>// Webkit bug: https://bugs.webkit.org/show_bug.cgi?id=29084</p><p>The following comment/snippet was identified via the pattern: \bBUG\b</p><p>// Blink bug: https://bugs.chromium.org/p/chromium/issues/detail?id=589347</p><p>The following comment/snippet was identified via the pattern: \bSELECT\b</p><p>	"change select submit keydown keypress keyup contextmenu" ).split( " " ),</p><p>The following comment/snippet was identified via the pattern: \bFROM\b</p><p>// derived from file names, and jQuery is normally delivered in a lowercase</p><p></p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Reference</td><td width="80%"><p></p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">CWE Id</td><td width="80%">200</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">WASC Id</td><td width="80%">13</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Source ID</td><td width="80%">3</td>
+</tr>
+
+</table>
+<div class="spacer"></div>
+<table width="100%" class="results">
+  
+  
+  
+  
+<tr height="24" class="risk-info">
+<th width="20%"><a name="info"></a>Informational (Low)</th><th width="80%">Loosely Scoped Cookie</th>
+</tr>
+  
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Description</td><td width="80%"><p>Cookies can be scoped by domain or path. This check is only concerned with domain scope.The domain scope applied to a cookie determines which domains can access it. For example, a cookie can be scoped strictly to a subdomain e.g. www.nottrusted.com, or loosely scoped to a parent domain e.g. nottrusted.com. In the latter case, any subdomain of nottrusted.com can access the cookie. Loosely scoped cookies are common in mega-applications like google.com and live.com. Cookies set from a subdomain like app.foo.bar are transmitted only to that domain by the browser. However, cookies scoped to a parent-level domain may be transmitted to the parent, or any subdomain of the parent.</p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Home/Login</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Instances</td><td width="80%">1</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Solution</td><td width="80%"><p>Always scope cookies to a FQDN (Fully Qualified Domain Name).</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Other information</td><td width="80%"><p>The origin domain used for comparison was: </p><p>localhost</p><p>__RequestVerificationToken=RY0LHvfaMaHiB4DPyUxqALYBrZHTpdAAwlfr30aTb2FXiycSBnLYbMPzdnIMBT5vzy1f4ZcsXkQTIWZui61WK-K3QAreUrthvbRYky1Wxnk1</p><p></p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Reference</td><td width="80%"><p>https://tools.ietf.org/html/rfc6265#section-4.1</p><p>https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes.html</p><p>http://code.google.com/p/browsersec/wiki/Part2#Same-origin_policy_for_cookies</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">CWE Id</td><td width="80%">565</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">WASC Id</td><td width="80%">15</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Source ID</td><td width="80%">3</td>
+</tr>
+
+</table>
+<div class="spacer"></div>
+<table width="100%" class="results">
+  
+  
+  
+  
+<tr height="24" class="risk-info">
+<th width="20%"><a name="info"></a>Informational (Low)</th><th width="80%">Timestamp Disclosure - Unix</th>
+</tr>
+  
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Description</td><td width="80%"><p>A timestamp was disclosed by the application/web server - Unix</p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Scripts/jquery-3.4.1.js</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">20110929</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Content/bootstrap.css</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">66666667</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Content/bootstrap.css</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">33333333</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Scripts/jquery-3.4.1.js</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">20030331</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Content/bootstrap.css</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">42857143</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Content/bootstrap.css</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">80000000</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Scripts/modernizr-2.8.3.js</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">20090723</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent1">URL</td><td width="80%">https://localhost:44395/Content/bootstrap.css</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Method</td><td width="80%">GET</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%" class="indent2">Evidence</td><td width="80%">00000000</td>
+</tr>
+  
+  
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Instances</td><td width="80%">8</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Solution</td><td width="80%"><p>Manually confirm that the timestamp data is not sensitive, and that the data cannot be aggregated to disclose exploitable patterns.</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Other information</td><td width="80%"><p>20110929, which evaluates to: 1970-08-21 20:22:09</p></td>
+</tr>
+<TR vAlign="top">
+<TD colspan="2"></TD>
+</TR>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Reference</td><td width="80%"><p>http://projects.webappsec.org/w/page/13246936/Information%20Leakage</p></td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">CWE Id</td><td width="80%">200</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">WASC Id</td><td width="80%">13</td>
+</tr>
+  
+<tr bgcolor="#e8e8e8">
+<td width="20%">Source ID</td><td width="80%">3</td>
+</tr>
+
+</table>
+</body>
+</html>
